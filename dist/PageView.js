@@ -33,6 +33,7 @@ var PageView = function (_React$Component) {
       var linkClassName = this.props.pageLinkClassName;
       var cssClassName = this.props.pageClassName;
       var onClick = this.props.onClick;
+      var link = void 0;
 
       if (this.props.selected) {
         if (typeof cssClassName !== 'undefined') {
@@ -40,16 +41,24 @@ var PageView = function (_React$Component) {
         } else {
           cssClassName = this.props.activeClassName;
         }
+
+        link = _react2.default.createElement(
+          'span',
+          { className: linkClassName },
+          this.props.page
+        );
+      } else {
+        link = _react2.default.createElement(
+          'a',
+          { className: linkClassName },
+          this.props.page
+        );
       }
 
       return _react2.default.createElement(
         'li',
         { onClick: onClick, className: cssClassName },
-        _react2.default.createElement(
-          'a',
-          { className: linkClassName },
-          this.props.page
-        )
+        link
       );
     }
   }]);

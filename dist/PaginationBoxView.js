@@ -176,10 +176,42 @@ var PaginationBoxView = function (_Component) {
     key: 'render',
     value: function render() {
       var disabled = this.props.disabledClassName;
+      var prevContainer = void 0;
+      var nextContainer = void 0;
+      var nextDisabled = this.state.selected === this.props.pageNum - 1;
+      var prevDisabled = this.state.selected === 0;
 
-      var previousClasses = (0, _classnames2.default)(this.props.previousClassName, _defineProperty({}, disabled, this.state.selected === 0));
+      var previousClasses = (0, _classnames2.default)(this.props.previousClassName, _defineProperty({}, disabled, prevDisabled));
 
-      var nextClasses = (0, _classnames2.default)(this.props.nextClassName, _defineProperty({}, disabled, this.state.selected === this.props.pageNum - 1));
+      var nextClasses = (0, _classnames2.default)(this.props.nextClassName, _defineProperty({}, disabled, nextDisabled));
+
+      if (nextDisabled) {
+        nextContainer = _react2.default.createElement(
+          'span',
+          { className: this.props.nextLinkClassName },
+          this.props.nextLabel
+        );
+      } else {
+        nextContainer = _react2.default.createElement(
+          'a',
+          { className: this.props.nextLinkClassName },
+          this.props.nextLabel
+        );
+      }
+
+      if (prevDisabled) {
+        prevContainer = _react2.default.createElement(
+          'span',
+          { className: this.props.previousLinkClassName },
+          this.props.previousLabel
+        );
+      } else {
+        prevContainer = _react2.default.createElement(
+          'a',
+          { className: this.props.previousLinkClassName },
+          this.props.previousLabel
+        );
+      }
 
       return _react2.default.createElement(
         'ul',
@@ -187,21 +219,13 @@ var PaginationBoxView = function (_Component) {
         _react2.default.createElement(
           'li',
           { onClick: this.handlePreviousPage, className: previousClasses },
-          _react2.default.createElement(
-            'a',
-            { className: this.props.previousLinkClassName },
-            this.props.previousLabel
-          )
+          prevContainer
         ),
         (0, _reactAddonsCreateFragment2.default)(this.pagination()),
         _react2.default.createElement(
           'li',
           { onClick: this.handleNextPage, className: nextClasses },
-          _react2.default.createElement(
-            'a',
-            { className: this.props.nextLinkClassName },
-            this.props.nextLabel
-          )
+          nextContainer
         )
       );
     }

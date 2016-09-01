@@ -200,16 +200,16 @@ export default class PaginationBoxView extends Component {
     }
 
     if(prevDisabled) {
-      nextContainer = (<span className={this.props.previousLinkClassName}>{this.props.previousLabel}</span>);
+      prevContainer = (<span className={this.props.previousLinkClassName}>{this.props.previousLabel}</span>);
     } else {
-      nextContainer = (<a className={this.props.previousLinkClassName}>{this.props.previousLabel}</a>);
+      prevContainer = (<a className={this.props.previousLinkClassName}>{this.props.previousLabel}</a>);
     }
 
 
     return (
       <ul className={this.props.containerClassName}>
         <li onClick={this.handlePreviousPage} className={previousClasses}>
-          {nextContainer}
+          {prevContainer}
         </li>
 
         {createFragment(this.pagination())}

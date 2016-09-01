@@ -5,7 +5,7 @@
   "main": "./dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/AdeleD/react-paginate"
+    "url": "https://github.com/mikey0000/react-paginate"
   },
   "keywords": [
     "react-component",
