@@ -16,6 +16,7 @@ export default class PaginationBoxView extends Component {
     nextLabel             : PropTypes.node,
     breakLabel            : PropTypes.node,
     clickCallback         : PropTypes.func,
+    changeSelected        : PropTypes.func,
     initialSelected       : PropTypes.number,
     forceSelected         : PropTypes.number,
     containerClassName    : PropTypes.string,
@@ -68,22 +69,22 @@ export default class PaginationBoxView extends Component {
 
   handlePreviousPage = evt => {
     evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
-    if (this.state.selected > 0) {
-      this.handlePageSelected(this.state.selected - 1, evt);
+    if (this.props.changeSelected() > 0) {
+      this.handlePageSelected(this.props.changeSelected() - 1, evt);
     }
   };
 
   handleNextPage = evt => {
     evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
-    if (this.state.selected < this.props.pageNum - 1) {
-      this.handlePageSelected(this.state.selected + 1, evt);
+    if (this.props.changeSelected() < this.props.pageNum - 1) {
+      this.handlePageSelected(this.props.changeSelected() + 1, evt);
     }
   };
 
   handlePageSelected = (selected, evt) => {
     evt.preventDefault ? evt.preventDefault() : (evt.returnValue = false);
 
-    if (this.state.selected === selected) return;
+    if (this.props.changeSelected() === selected) return;
 
     this.setState({selected: selected});
 
@@ -106,7 +107,7 @@ export default class PaginationBoxView extends Component {
       for (let index = 0; index < this.props.pageNum; index++) {
         items['key' + index] = <PageView
           onClick={this.handlePageSelected.bind(null, index)}
-          selected={this.state.selected === index}
+          selected={this.props.changeSelected() === index}
           pageClassName={this.props.pageClassName}
           pageLinkClassName={this.props.pageLinkClassName}
           activeClassName={this.props.activeClassName}
@@ -118,12 +119,12 @@ export default class PaginationBoxView extends Component {
       let leftSide  = (this.props.pageRangeDisplayed / 2);
       let rightSide = (this.props.pageRangeDisplayed - leftSide);
 
-      if (this.state.selected > this.props.pageNum - this.props.pageRangeDisplayed / 2) {
-        rightSide = this.props.pageNum - this.state.selected;
+      if (this.props.changeSelected() > this.props.pageNum - this.props.pageRangeDisplayed / 2) {
+        rightSide = this.props.pageNum - this.props.changeSelected();
         leftSide  = this.props.pageRangeDisplayed - rightSide;
       }
-      else if (this.state.selected < this.props.pageRangeDisplayed / 2) {
-        leftSide  = this.state.selected;
+      else if (this.props.changeSelected() < this.props.pageRangeDisplayed / 2) {
+        leftSide  = this.props.changeSelected();
         rightSide = this.props.pageRangeDisplayed - leftSide;
       }
 
@@ -138,7 +139,7 @@ export default class PaginationBoxView extends Component {
         let pageView = (
           <PageView
             onClick={this.handlePageSelected.bind(null, index)}
-            selected={this.state.selected === index}
+            selected={this.props.changeSelected() === index}
             pageClassName={this.props.pageClassName}
             pageLinkClassName={this.props.pageLinkClassName}
             activeClassName={this.props.activeClassName}
@@ -155,7 +156,7 @@ export default class PaginationBoxView extends Component {
           continue;
         }
 
-        if ((index >= this.state.selected - leftSide) && (index <= this.state.selected + rightSide)) {
+        if ((index >= this.props.changeSelected() - leftSide) && (index <= this.props.changeSelected() + rightSide)) {
           items['key' + index] = pageView;
           continue;
         }
@@ -184,8 +185,8 @@ export default class PaginationBoxView extends Component {
     let disabled = this.props.disabledClassName;
     let prevContainer;
     let nextContainer;
-    const nextDisabled = this.state.selected === this.props.pageNum - 1;
-    const prevDisabled = this.state.selected === 0;
+    const nextDisabled = this.props.changeSelected() === this.props.pageNum - 1;
+    const prevDisabled = this.props.changeSelected() === 0;
 
     const previousClasses = classNames(this.props.previousClassName,
                                        {[disabled]: prevDisabled});

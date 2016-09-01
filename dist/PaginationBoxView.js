@@ -46,22 +46,22 @@ var PaginationBoxView = function (_Component) {
 
     _this.handlePreviousPage = function (evt) {
       evt.preventDefault ? evt.preventDefault() : evt.returnValue = false;
-      if (_this.state.selected > 0) {
-        _this.handlePageSelected(_this.state.selected - 1, evt);
+      if (_this.props.changeSelected() > 0) {
+        _this.handlePageSelected(_this.props.changeSelected() - 1, evt);
       }
     };
 
     _this.handleNextPage = function (evt) {
       evt.preventDefault ? evt.preventDefault() : evt.returnValue = false;
-      if (_this.state.selected < _this.props.pageNum - 1) {
-        _this.handlePageSelected(_this.state.selected + 1, evt);
+      if (_this.props.changeSelected() < _this.props.pageNum - 1) {
+        _this.handlePageSelected(_this.props.changeSelected() + 1, evt);
       }
     };
 
     _this.handlePageSelected = function (selected, evt) {
       evt.preventDefault ? evt.preventDefault() : evt.returnValue = false;
 
-      if (_this.state.selected === selected) return;
+      if (_this.props.changeSelected() === selected) return;
 
       _this.setState({ selected: selected });
 
@@ -83,7 +83,7 @@ var PaginationBoxView = function (_Component) {
         for (var index = 0; index < _this.props.pageNum; index++) {
           items['key' + index] = _react2.default.createElement(_PageView2.default, {
             onClick: _this.handlePageSelected.bind(null, index),
-            selected: _this.state.selected === index,
+            selected: _this.props.changeSelected() === index,
             pageClassName: _this.props.pageClassName,
             pageLinkClassName: _this.props.pageLinkClassName,
             activeClassName: _this.props.activeClassName,
@@ -94,11 +94,11 @@ var PaginationBoxView = function (_Component) {
         var leftSide = _this.props.pageRangeDisplayed / 2;
         var rightSide = _this.props.pageRangeDisplayed - leftSide;
 
-        if (_this.state.selected > _this.props.pageNum - _this.props.pageRangeDisplayed / 2) {
-          rightSide = _this.props.pageNum - _this.state.selected;
+        if (_this.props.changeSelected() > _this.props.pageNum - _this.props.pageRangeDisplayed / 2) {
+          rightSide = _this.props.pageNum - _this.props.changeSelected();
           leftSide = _this.props.pageRangeDisplayed - rightSide;
-        } else if (_this.state.selected < _this.props.pageRangeDisplayed / 2) {
-          leftSide = _this.state.selected;
+        } else if (_this.props.changeSelected() < _this.props.pageRangeDisplayed / 2) {
+          leftSide = _this.props.changeSelected();
           rightSide = _this.props.pageRangeDisplayed - leftSide;
         }
 
@@ -112,7 +112,7 @@ var PaginationBoxView = function (_Component) {
 
           var pageView = _react2.default.createElement(_PageView2.default, {
             onClick: _this.handlePageSelected.bind(null, _index),
-            selected: _this.state.selected === _index,
+            selected: _this.props.changeSelected() === _index,
             pageClassName: _this.props.pageClassName,
             pageLinkClassName: _this.props.pageLinkClassName,
             activeClassName: _this.props.activeClassName,
@@ -128,7 +128,7 @@ var PaginationBoxView = function (_Component) {
             continue;
           }
 
-          if (_index >= _this.state.selected - leftSide && _index <= _this.state.selected + rightSide) {
+          if (_index >= _this.props.changeSelected() - leftSide && _index <= _this.props.changeSelected() + rightSide) {
             items['key' + _index] = pageView;
             continue;
           }
@@ -178,8 +178,8 @@ var PaginationBoxView = function (_Component) {
       var disabled = this.props.disabledClassName;
       var prevContainer = void 0;
       var nextContainer = void 0;
-      var nextDisabled = this.state.selected === this.props.pageNum - 1;
-      var prevDisabled = this.state.selected === 0;
+      var nextDisabled = this.props.changeSelected() === this.props.pageNum - 1;
+      var prevDisabled = this.props.changeSelected() === 0;
 
       var previousClasses = (0, _classnames2.default)(this.props.previousClassName, _defineProperty({}, disabled, prevDisabled));
 
@@ -242,6 +242,7 @@ PaginationBoxView.propTypes = {
   nextLabel: _react.PropTypes.node,
   breakLabel: _react.PropTypes.node,
   clickCallback: _react.PropTypes.func,
+  changeSelected: _react.PropTypes.func,
   initialSelected: _react.PropTypes.number,
   forceSelected: _react.PropTypes.number,
   containerClassName: _react.PropTypes.string,
