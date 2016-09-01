@@ -1,4 +1,3 @@
-'use strict';
 
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
@@ -183,23 +182,40 @@ export default class PaginationBoxView extends Component {
 
   render() {
     let disabled = this.props.disabledClassName;
+    let prevContainer;
+    let nextContainer;
+    const nextDisabled = this.state.selected === this.props.pageNum - 1;
+    const prevDisabled = this.state.selected === 0;
 
     const previousClasses = classNames(this.props.previousClassName,
-                                       {[disabled]: this.state.selected === 0});
+                                       {[disabled]: prevDisabled});
 
     const nextClasses = classNames(this.props.nextClassName,
-                                   {[disabled]: this.state.selected === this.props.pageNum - 1});
+                                   {[disabled]: nextDisabled});
+
+    if(nextDisabled) {
+      nextContainer = (<span className={this.props.nextLinkClassName}>{this.props.nextLabel}</span>);
+    } else {
+      nextContainer = (<a className={this.props.nextLinkClassName}>{this.props.nextLabel}</a>);
+    }
+
+    if(prevDisabled) {
+      nextContainer = (<span className={this.props.previousLinkClassName}>{this.props.previousLabel}</span>);
+    } else {
+      nextContainer = (<a className={this.props.previousLinkClassName}>{this.props.previousLabel}</a>);
+    }
+
 
     return (
       <ul className={this.props.containerClassName}>
         <li onClick={this.handlePreviousPage} className={previousClasses}>
-          <a className={this.props.previousLinkClassName}>{this.props.previousLabel}</a>
+          {nextContainer}
         </li>
 
         {createFragment(this.pagination())}
 
         <li onClick={this.handleNextPage} className={nextClasses}>
-          <a className={this.props.nextLinkClassName}>{this.props.nextLabel}</a>
+          {nextContainer}
         </li>
       </ul>
     );
